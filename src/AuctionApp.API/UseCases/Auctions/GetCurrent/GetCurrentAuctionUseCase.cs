@@ -1,18 +1,16 @@
 ﻿using AuctionApp.API.Entities;
+using AuctionApp.API.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace AuctionApp.API.UseCases.Auctions.GetCurrent
 {
     public class GetCurrentAuctionUseCase
     {
-        public Auction Execute()
+        public Auction? Execute()
         {
-            return new Auction
-            {
-                Id = 1,
-                Name = "Test",
-                Starts = DateTime.Now,
-                Ends = DateTime.Now,
-            };
+            var repository = new AuctionAppDbContext();
+            
+            return repository.Auctions.Include(x => x.Items).FirstOrDefault(data => data.Starts >= DateTime.Now && data.Ends <= DateTime.Now);
         }
     }
 }
