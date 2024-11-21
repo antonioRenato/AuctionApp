@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AuctionApp.API.Communication.Request;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AuctionApp.API.Controllers
 {
@@ -6,7 +7,7 @@ namespace AuctionApp.API.Controllers
     {
         [HttpPost]
         [Route("{itemId}")]
-        public IActionResult CreateOffer([FromRoute]int itemId)
+        public IActionResult CreateOffer([FromRoute]int itemId, [FromBody] RequestCreateOfferJson request)
         {
             return Created();
         }
