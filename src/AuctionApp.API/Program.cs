@@ -1,4 +1,5 @@
 using AuctionApp.API.Filters;
+using AuctionApp.API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<AuthenticationUserAttribute>();
+builder.Services.AddScoped<LoggedUser>();
+
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 

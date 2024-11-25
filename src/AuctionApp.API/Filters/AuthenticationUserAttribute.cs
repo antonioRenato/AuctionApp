@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AuctionApp.API.Repositories;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace AuctionApp.API.Filters
@@ -7,7 +9,24 @@ namespace AuctionApp.API.Filters
     {
         public void OnAuthorization(AuthorizationFilterContext context)
         {
-            var token = TokenOnRequest(context.HttpContext);
+            try
+            {
+                var token = TokenOnRequest(context.HttpContext);
+                var repository = new AuctionAppDbContext();
+
+                var email = FromBase64String(token);
+
+                var exist = repository.Users.Any(user => user.Email.Equals(email));
+
+                if (!exist)
+                {
+                    context.Result = new UnauthorizedObjectResult("Email not valid");
+                }
+            }
+            catch (Exception ex)
+            {
+                context.Result = new UnauthorizedObjectResult(ex.Message);
+            }
         }
 
         private string TokenOnRequest(HttpContext context)
@@ -20,6 +39,13 @@ namespace AuctionApp.API.Filters
             }
 
             return auth["Bearer ".Length..];
+        }
+
+        private string FromBase64String(string base64)
+        {
+            var data = Convert.FromBase64String(base64);
+
+            return System.Text.Encoding.UTF8.GetString(data);
         }
     }
 }
