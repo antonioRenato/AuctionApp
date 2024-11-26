@@ -14,7 +14,7 @@ namespace AuctionApp.API.UseCases.Offers.CreateOffer
             _loggedUser = loggedUser;
         }
 
-        public void Execute(int itemId, RequestCreateOfferJson request)
+        public int Execute(int itemId, RequestCreateOfferJson request)
         {
             var repository = new AuctionAppDbContext();
 
@@ -29,6 +29,10 @@ namespace AuctionApp.API.UseCases.Offers.CreateOffer
             };
 
             repository.Offers.Add(offer);
+
+            repository.SaveChanges();
+
+            return offer.Id;
         }
     }
 }
