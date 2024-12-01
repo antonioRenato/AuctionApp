@@ -9,9 +9,6 @@ namespace AuctionApp.API.Repositories
         public DbSet<User> Users { get; set; }
         public DbSet<Offer> Offers { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlite("Data Source=C:\\Databases\\SQLite\\leilaoDbNLW.db");
-        }
+        public AuctionAppDbContext(DbContextOptions options) : base(options) { }
     }
 }

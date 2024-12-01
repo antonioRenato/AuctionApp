@@ -1,9 +1,12 @@
 using AuctionApp.API.Contracts;
 using AuctionApp.API.Filters;
+using AuctionApp.API.Repositories;
 using AuctionApp.API.Repositories.DataAccess;
 using AuctionApp.API.Services;
 using AuctionApp.API.UseCases.Auctions.GetCurrent;
 using AuctionApp.API.UseCases.Offers.CreateOffer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -51,6 +54,12 @@ builder.Services.AddScoped<CreateOfferUseCase>();
 builder.Services.AddScoped<GetCurrentAuctionUseCase>();
 builder.Services.AddScoped<IAuctionRepository, AuctionRepository> ();
 builder.Services.AddScoped<IOfferRepository, OfferRepository> ();
+builder.Services.AddScoped<IUserRepository, UserRepository> ();
+
+builder.Services.AddDbContext<AuctionAppDbContext>(options =>
+{
+    options.UseSqlite(@"Data Source=C:\\Databases\\SQLite\\leilaoDbNLW.db");
+});
 
 builder.Services.AddHttpContextAccessor();
 
