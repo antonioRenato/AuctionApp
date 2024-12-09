@@ -4,7 +4,7 @@ using AuctionApp.API.Repositories;
 
 namespace AuctionApp.API.Services
 {
-    public class LoggedUser
+    public class LoggedUser : ILoggedUser
     {
         private readonly IHttpContextAccessor _httpContext;
         private readonly IUserRepository _repository;
